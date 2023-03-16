@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
@@ -25,17 +26,22 @@ export class RecadosEntity {
   detalhamento!: string;
 
   @CreateDateColumn({ name: "create_at" })
-  createRecado!: Date;
+  createRecado?: Date;
 
   @Column({ name: "update_at" })
   updateRecado?: Date;
 
   @ManyToOne(() => UsuariosEntity, (fkusuario) => fkusuario.recados)
   @JoinColumn({ name: "usuarioId", referencedColumnName: "usuarioId" })
-  usuario!: UsuariosEntity;
+  usuario?: UsuariosEntity;
+
+  @BeforeInsert()
+  setCreatedAt?() {
+    this.createRecado = new Date();
+  }
 
   @BeforeUpdate()
-  beforeUpdate() {
+  beforeUpdate?() {
     this.updateRecado = new Date();
   }
 }

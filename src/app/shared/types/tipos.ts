@@ -2,12 +2,7 @@ import { UsuariosEntity } from "../database/entities/usuarios.entity";
 
 export type status = "ativo" | "arquivado";
 
-export type CriarUsuarioRequest = {
-  nome: string;
-  email: string;
-  cpf: string;
-  senha: string;
-};
+
 
 export type AtualizarUsuarioRequest = {
   usuarioId: number;

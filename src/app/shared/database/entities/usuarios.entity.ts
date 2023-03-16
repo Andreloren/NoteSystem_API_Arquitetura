@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   BeforeUpdate,
   Column,
   CreateDateColumn,
@@ -12,7 +13,7 @@ import { RecadosEntity } from "./recados.entity";
 @Entity({ name: "usuario" })
 export class UsuariosEntity {
   @PrimaryGeneratedColumn({ name: "usuario_id" })
-  usuarioId!: number;
+  usuarioId?: number;
 
   @Column({ type: "text" })
   nome!: string;
@@ -26,18 +27,23 @@ export class UsuariosEntity {
   @Column({ type: "text" })
   senha!: string;
 
-  @CreateDateColumn({ name: "create_user_at", type: "timestamp" })
-  createUser!: Date;
+  @CreateDateColumn({ name: "create_user_at" })
+  createUser?: Date;
 
-  @Column({ name: "update_user_at", type: "timestamp", nullable: true })
+  @Column({ name: "update_user_at" })
   updateUser?: Date;
 
   @OneToMany(() => RecadosEntity, (fkrecados) => fkrecados.usuario)
   @JoinColumn({ name: "recadoId", referencedColumnName: "recadoId" })
-  recados!: RecadosEntity[];
+  recados?: RecadosEntity[];
+
+  @BeforeInsert()
+  setCreatedAt?() {
+    this.createUser = new Date();
+  }
 
   @BeforeUpdate()
-  beforeUpdate() {
+  beforeUpdate?() {
     this.updateUser = new Date();
   }
 }

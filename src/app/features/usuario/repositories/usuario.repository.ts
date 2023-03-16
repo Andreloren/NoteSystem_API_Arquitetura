@@ -27,11 +27,20 @@ export class UsuarioRepository {
 
     const result = await this._repository.save(usuarioEntity);
 
-    return result;
+    return this.mapToModel(result);
   }
 
-  public async getByUsername(usuarioId: number) {
+  public async getByUsuarioId(usuarioId: number) {
     const result = await this._repository.findOneBy({ usuarioId });
+
+    if (!result) {
+      return null;
+    }
+    return this.mapToModel(result);
+  }
+
+  public async getByCpf(cpf: string) {
+    const result = await this._repository.findOneBy({ cpf });
 
     if (!result) {
       return null;
