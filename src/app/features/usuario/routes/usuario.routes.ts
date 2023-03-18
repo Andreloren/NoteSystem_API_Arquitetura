@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { RecadosController } from "../../recados/controllers/recados.controller";
+import { validarCamposRecadoValidator } from "../../recados/validators/validarCampos.validator";
 import { UsuarioController } from "../controllers/usuario.controller";
 import { buscarUsuarioPorId } from "../validators/buscarUsuarioPorId.validator";
 import { checkCpfDuplicadoValidator } from "../validators/checkCpfDuplicado.validator";
@@ -8,7 +10,7 @@ const usuarioRoutes = Router();
 
 usuarioRoutes.post(
   "/",
-  [validarCamposUsuario, checkCpfDuplicadoValidator],
+  [checkCpfDuplicadoValidator, validarCamposUsuario],
   new UsuarioController().create
 );
 
@@ -18,6 +20,24 @@ usuarioRoutes.get(
   "/:usuarioId",
   [buscarUsuarioPorId],
   new UsuarioController().listById
+);
+
+usuarioRoutes.put(
+  "/:usuarioId",
+  [buscarUsuarioPorId],
+  new UsuarioController().update
+);
+
+usuarioRoutes.post(
+  "/:usuarioId/recados",
+  [buscarUsuarioPorId, validarCamposRecadoValidator],
+  new RecadosController().create
+);
+
+usuarioRoutes.get(
+  "/:usuarioId/recados",
+  [buscarUsuarioPorId],
+  new UsuarioController().listRecadosByUsuarioId
 );
 
 export { usuarioRoutes };

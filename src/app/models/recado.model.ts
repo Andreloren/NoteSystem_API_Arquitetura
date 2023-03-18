@@ -1,29 +1,34 @@
+import { RecadosEntity } from "../shared/database/entities/recados.entity";
+import { UsuariosEntity } from "../shared/database/entities/usuarios.entity";
 import { status } from "../shared/types/tipos";
 
 export class Recado {
   recadoId?: string;
-  status: status;
+  status?: status;
   descricao: string;
   detalhamento: string;
+  usuarioId: number;
+  recados?: RecadosEntity[];
 
   constructor(
-    status: status,
     descricao: string,
     detalhamento: string,
+    usuarioId: number,
+    status?: status,
     recadoId?: string
   ) {
-    this.status = status;
     this.descricao = descricao;
     this.detalhamento = detalhamento;
-    this.recadoId = recadoId;
+    this.usuarioId = usuarioId;
   }
 
   static create(
-    status: status,
     descricao: string,
     detalhamento: string,
+    usuarioId: number,
+    status?: status,
     recadoId?: string
   ): Recado {
-    return new Recado(status, descricao, detalhamento, recadoId);
+    return new Recado(descricao, detalhamento, usuarioId, status, recadoId);
   }
 }

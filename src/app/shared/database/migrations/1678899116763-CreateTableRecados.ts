@@ -7,17 +7,19 @@ export class CreateTableRecados1678897560003 implements MigrationInterface {
         name: "recados",
         columns: [
           {
-            name: "recado_id",
+            name: "recadoId",
             type: "uuid",
             isPrimary: true,
             isNullable: false,
             isGenerated: true,
-            primaryKeyConstraintName: "recado_id",
+            default: "uuid_generate_v4()",
+            primaryKeyConstraintName: "recadoId",
           },
           {
             name: "status",
             type: "varchar",
             length: "10",
+            default: "'ativo'",
             isNullable: false,
           },
           {

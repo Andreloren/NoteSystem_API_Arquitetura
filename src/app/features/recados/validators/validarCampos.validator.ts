@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-export const validarCamposRecado = (
+export const validarCamposRecadoValidator = (
   req: Request,
   res: Response,
   next: NextFunction

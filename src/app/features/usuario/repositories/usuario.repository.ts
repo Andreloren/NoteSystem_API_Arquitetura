@@ -16,18 +16,36 @@ export class UsuarioRepository {
     );
   }
 
-  public async create(admin: UsuariosEntity): Promise<Usuario> {
+  public async create(usuario: UsuariosEntity): Promise<Usuario> {
     const usuarioEntity = this._repository.create({
-      usuarioId: admin.usuarioId,
-      nome: admin.nome,
-      email: admin.email,
-      cpf: admin.cpf,
-      senha: admin.senha,
+      usuarioId: usuario.usuarioId,
+      nome: usuario.nome,
+      email: usuario.email,
+      cpf: usuario.cpf,
+      senha: usuario.senha,
     });
 
     const result = await this._repository.save(usuarioEntity);
 
-    return this.mapToModel(result);
+    return result;
+  }
+
+  public async update(
+    nome: string,
+    email: string,
+    cpf: string,
+    senha: string,
+    usuarioId?: number
+  ): Promise<Usuario> {
+    const usuarioAtualizado = await this._repository.findOneBy({ usuarioId });
+
+    usuarioAtualizado!.nome = nome ? nome : usuarioAtualizado!.nome;
+    usuarioAtualizado!.email = email ? email : usuarioAtualizado!.email;
+    usuarioAtualizado!.senha = senha ? senha : usuarioAtualizado!.senha;
+
+    const result = await this._repository.save(usuarioAtualizado!);
+
+    return result;
   }
 
   public async getByUsuarioId(usuarioId: number) {
@@ -55,5 +73,18 @@ export class UsuarioRepository {
       return null;
     }
     return result.map((usuario) => this.mapToModel(usuario));
+  }
+
+  public async getAllRecadosByIdUsuario(usuarioId: number): Promise<any> {
+    const result = await this._repository.findOne({
+      where: { usuarioId: usuarioId },
+      relations: ["recados"],
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    return result;
   }
 }

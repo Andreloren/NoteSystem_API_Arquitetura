@@ -13,17 +13,20 @@ import { UsuariosEntity } from "./usuarios.entity";
 
 @Entity({ name: "recados" })
 export class RecadosEntity {
-  @PrimaryGeneratedColumn("uuid", { name: "recado_id" })
-  recadoId!: string;
+  @PrimaryGeneratedColumn("uuid")
+  recadoId?: string;
 
   @Column()
-  status!: string;
+  status?: string;
 
   @Column()
   descricao!: string;
 
   @Column()
   detalhamento!: string;
+
+  @Column()
+  usuarioId!: number;
 
   @CreateDateColumn({ name: "create_at" })
   createRecado?: Date;
