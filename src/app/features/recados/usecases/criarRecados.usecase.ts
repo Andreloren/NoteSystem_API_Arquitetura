@@ -1,12 +1,11 @@
 import { Recado } from "../../../models/recado.model";
-import { status } from "../../../shared/types/tipos";
 import { RecadoRepository } from "../repositories/recados.repository";
 
 interface CriarRecadosDTO {
   descricao: string;
   detalhamento: string;
   usuarioId: number;
-  status?: status;
+  status?: string;
 }
 
 export class CriarRecadosUseCase {

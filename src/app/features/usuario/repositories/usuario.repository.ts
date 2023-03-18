@@ -104,4 +104,29 @@ export class UsuarioRepository {
 
     return result;
   }
+
+  // public async updateRecado(
+  //   recadoId: string,
+  //   usuarioId: number,
+  //   descricao: string,
+  //   detalhamento: string,
+  //   status: string
+  // ): Promise<any> {
+  //   const recadoAtualizado = await this._repository.findOne({
+  //     relations: ["recados"],
+  //     where: { usuarioId, recados: { recadoId: recadoId } },
+  //   });
+
+  //   recadoAtualizado!.descricao = descricao
+  //     ? descricao
+  //     : recadoAtualizado!.descricao;
+  //   recadoAtualizado!.detalhamento = detalhamento
+  //     ? detalhamento
+  //     : recadoAtualizado!.detalhamento;
+  //   recadoAtualizado!.status = status ? status : recadoAtualizado!.status;
+
+  //   const result = await this._repository.save(recadoAtualizado!);
+
+  //   return result;
+  // }
 }

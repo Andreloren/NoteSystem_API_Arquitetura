@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { RecadoRepository } from "../repositories/recados.repository";
-import { BuscarRecadosPorUsuarioUsecase } from "../../usuario/usecases/buscarRecadosPorUsuario.usecase";
+import { AtualizarRecadoUseCase } from "../../usuario/usecases/atualizarRecado.usecase";
 import { CriarRecadosUseCase } from "../usecases/criarRecados.usecase";
 
 export class RecadosController {
@@ -20,6 +20,34 @@ export class RecadosController {
       console.log(result);
 
       return HttpHelper.sucess(res, result, "Recado criado com Sucesso", 201);
+    } catch (error) {
+      return HttpHelper.error(res, "Server not found");
+    }
+  }
+
+  public async update(req: Request, res: Response) {
+    try {
+      const { usuarioId, recadoId } = req.params;
+      const { descricao, detalhamento, status } = req.body;
+
+      const useCase = new AtualizarRecadoUseCase(new RecadoRepository());
+
+      const result = await useCase.execute({
+        recadoId,
+        usuarioId: Number(usuarioId),
+        descricao,
+        detalhamento,
+        status,
+      });
+
+      if (!descricao && !detalhamento && !status) return res.status(304).end();
+
+      return HttpHelper.sucess(
+        res,
+        result,
+        "Recado atualizado com Sucesso",
+        200
+      );
     } catch (error) {
       return HttpHelper.error(res, "Server not found");
     }

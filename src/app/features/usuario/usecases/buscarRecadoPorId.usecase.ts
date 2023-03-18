@@ -1,5 +1,3 @@
-import { Recado } from "../../../models/recado.model";
-import { RecadoRepository } from "../../recados/repositories/recados.repository";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
 export class BuscarRecadoPorIdUsecase {

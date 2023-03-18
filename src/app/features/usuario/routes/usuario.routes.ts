@@ -46,4 +46,10 @@ usuarioRoutes.get(
   new UsuarioController().listRecadoById
 );
 
+usuarioRoutes.put(
+  "/:usuarioId/recados/:recadoId",
+  [buscarUsuarioPorId],
+  new RecadosController().update
+);
+
 export { usuarioRoutes };

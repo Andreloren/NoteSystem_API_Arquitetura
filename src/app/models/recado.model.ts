@@ -1,10 +1,8 @@
 import { RecadosEntity } from "../shared/database/entities/recados.entity";
-import { UsuariosEntity } from "../shared/database/entities/usuarios.entity";
-import { status } from "../shared/types/tipos";
 
 export class Recado {
   recadoId?: string;
-  status?: status;
+  status?: string;
   descricao: string;
   detalhamento: string;
   usuarioId: number;
@@ -14,19 +12,21 @@ export class Recado {
     descricao: string,
     detalhamento: string,
     usuarioId: number,
-    status?: status,
+    status?: string,
     recadoId?: string
   ) {
     this.descricao = descricao;
     this.detalhamento = detalhamento;
     this.usuarioId = usuarioId;
+    this.status = status;
+    this.recadoId = recadoId;
   }
 
   static create(
     descricao: string,
     detalhamento: string,
     usuarioId: number,
-    status?: status,
+    status?: string,
     recadoId?: string
   ): Recado {
     return new Recado(descricao, detalhamento, usuarioId, status, recadoId);

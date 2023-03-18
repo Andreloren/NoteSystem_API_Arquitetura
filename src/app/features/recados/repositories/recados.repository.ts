@@ -29,4 +29,29 @@ export class RecadoRepository {
 
     return result;
   }
+
+  public async update(
+    recadoId: string,
+    usuarioId: number,
+    descricao: string,
+    detalhamento: string,
+    status: string
+  ): Promise<Recado> {
+    const recadoAtualizado = await this._repository.findOne({
+      relations: ["usuario"],
+      where: { recadoId, usuario: { usuarioId: Number(usuarioId) } },
+    });
+
+    recadoAtualizado!.descricao = descricao
+      ? descricao
+      : recadoAtualizado!.descricao;
+    recadoAtualizado!.detalhamento = detalhamento
+      ? detalhamento
+      : recadoAtualizado!.detalhamento;
+    recadoAtualizado!.status = status ? status : recadoAtualizado!.status;
+
+    const result = await this._repository.save(recadoAtualizado!);
+
+    return this.mapToModel(result);
+  }
 }
