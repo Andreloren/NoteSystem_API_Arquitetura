@@ -87,4 +87,21 @@ export class UsuarioRepository {
 
     return result;
   }
+
+  public async getOneRecadoByIdUsuario(
+    usuarioId: number,
+    recadoId: string
+  ): Promise<any> {
+    const result = await this._repository.findOne({
+      relations: ["recados"],
+      where: { usuarioId, recados: { recadoId: recadoId } },
+    });
+    const recado = result?.recados?.filter((f) => f.recadoId === recadoId);
+
+    if (recado?.length === 0 || !recado) {
+      return null;
+    }
+
+    return result;
+  }
 }

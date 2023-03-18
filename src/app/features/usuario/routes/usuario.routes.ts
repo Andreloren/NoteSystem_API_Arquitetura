@@ -40,4 +40,10 @@ usuarioRoutes.get(
   new UsuarioController().listRecadosByUsuarioId
 );
 
+usuarioRoutes.get(
+  "/:usuarioId/recados/:recadoId",
+  [buscarUsuarioPorId],
+  new UsuarioController().listRecadoById
+);
+
 export { usuarioRoutes };

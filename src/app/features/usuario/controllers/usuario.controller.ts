@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 import { AtualizarUsuarioUseCase } from "../usecases/atualizarUsuario.usecase";
+import { BuscarRecadoPorIdUsecase } from "../usecases/buscarRecadoPorId.usecase";
 import { BuscarRecadosPorUsuarioUsecase } from "../usecases/buscarRecadosPorUsuario.usecase";
 import { BuscarTodosUsuariosUsecase } from "../usecases/buscarTodosUsuarios.usecase";
 import { BuscarUsuarioPorIdfUsecase } from "../usecases/buscarUsuarioPorId.usecase";
@@ -113,6 +114,24 @@ export class UsuarioController {
       } else {
         return HttpHelper.sucess(res, result!.recados);
       }
+    } catch (error) {
+      return HttpHelper.error(res, "Server not found");
+    }
+  }
+
+  public async listRecadoById(req: Request, res: Response) {
+    try {
+      const { usuarioId, recadoId } = req.params;
+
+      const useCase = new BuscarRecadoPorIdUsecase(new UsuarioRepository());
+
+      const result = await useCase.execute(Number(usuarioId), recadoId);
+
+      return HttpHelper.sucess(
+        res,
+        result.recados,
+        "Recado encontrado com sucesso"
+      );
     } catch (error) {
       return HttpHelper.error(res, "Server not found");
     }
