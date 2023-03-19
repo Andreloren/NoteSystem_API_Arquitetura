@@ -1,15 +1,14 @@
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
-export class BuscarTodosUsuariosUsecase {
+export class BuscarPorEmailUsecase {
   constructor(private repository: UsuarioRepository) {}
 
-  public async execute(): Promise<any | Error> {
-    const result = await this.repository.getAll();
+  public async execute(email: string) {
+    const result = await this.repository.getByEmail(email);
 
     if (!result) {
-      return Error;
+      return null;
     }
-
     return result;
   }
 }

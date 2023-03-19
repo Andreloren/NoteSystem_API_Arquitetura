@@ -12,7 +12,7 @@ export type AtualizarRecadoDTO = {
 export class AtualizarRecadoUseCase {
   constructor(private repository: RecadoRepository) {}
 
-  public async execute(data: AtualizarRecadoDTO): Promise<Recado> {
+  public async execute(data: AtualizarRecadoDTO): Promise<any | Error> {
     const recado = Recado.create(
       data.descricao,
       data.detalhamento,
@@ -20,6 +20,10 @@ export class AtualizarRecadoUseCase {
       data.status,
       data.recadoId
     );
+
+    if (!recado) {
+      return Error;
+    }
 
     return await this.repository.update(
       recado.recadoId!,

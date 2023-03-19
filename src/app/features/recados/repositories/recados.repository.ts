@@ -36,11 +36,15 @@ export class RecadoRepository {
     descricao: string,
     detalhamento: string,
     status: string
-  ): Promise<Recado> {
+  ): Promise<any | Error> {
     const recadoAtualizado = await this._repository.findOne({
       relations: ["usuario"],
       where: { recadoId, usuario: { usuarioId: Number(usuarioId) } },
     });
+
+    if (!recadoAtualizado) {
+      return new Error("Recado não existe");
+    }
 
     recadoAtualizado!.descricao = descricao
       ? descricao
@@ -58,14 +62,14 @@ export class RecadoRepository {
   public async delete(
     recadoId: string,
     usuarioId: number
-  ): Promise<Recado | null> {
+  ): Promise<Recado | Error> {
     const recado = await this._repository.findOne({
       relations: ["usuario"],
       where: { recadoId, usuario: { usuarioId: Number(usuarioId) } },
     });
 
     if (!recado) {
-      return null;
+      return new Error("Recado não existe");
     }
 
     await this._repository.delete(recadoId!);

@@ -8,7 +8,7 @@ export class DeletarRecadoUsecase {
     const result = await this.repository.delete(recadoId, usuarioId);
 
     if (!result) {
-      return null;
+      return Error;
     }
 
     return result;

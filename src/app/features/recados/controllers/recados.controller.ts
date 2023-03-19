@@ -41,6 +41,16 @@ export class RecadosController {
         status,
       });
 
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
+
+      if (result.status !== "ativo" && result.status !== "arquivado") {
+        return res
+          .status(401)
+          .json({ mensagem: "Permitido Status ATIVO ou ARQUIVADO" });
+      }
+
       if (!descricao && !detalhamento && !status) return res.status(304).end();
 
       return HttpHelper.sucess(
@@ -61,6 +71,10 @@ export class RecadosController {
       const useCase = new DeletarRecadoUsecase(new RecadoRepository());
 
       const result = await useCase.execute(recadoId, Number(usuarioId));
+
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
 
       return HttpHelper.sucess(res, result, "Recado deletado com Sucesso", 200);
     } catch (error) {

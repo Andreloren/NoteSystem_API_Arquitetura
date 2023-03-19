@@ -55,6 +55,10 @@ export class UsuarioController {
 
       const result = await useCase.execute();
 
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
+
       return HttpHelper.sucess(res, result);
     } catch (error) {
       return HttpHelper.error(res, "Server not found");
@@ -68,6 +72,10 @@ export class UsuarioController {
       const useCase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
 
       const result = await useCase.execute(Number(usuarioId));
+
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
 
       return HttpHelper.sucess(res, result);
     } catch (error) {
@@ -86,6 +94,10 @@ export class UsuarioController {
 
       const result = await useCase.execute(Number(usuarioId));
 
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
+
       if (filter) {
         return res.status(200).json({
           mensagem: "Recado encontrado com sucesso",
@@ -99,17 +111,27 @@ export class UsuarioController {
                   .toLowerCase()
                   .includes(filter.toString().toLowerCase())
             )
-            .map((m) => {
-              return {
-                createRecado: m.createRecado,
-                descricao: m.descricao,
-                detalhamento: m.detalhamento,
-                recadoId: m.recadoId,
-                status: m.status,
-                usuarioId: m.usuarioId,
-                updateRecado: m.updateRecado,
-              };
-            }),
+            .map(
+              (m: {
+                createRecado: string;
+                descricao: string;
+                detalhamento: string;
+                recadoId: string;
+                status: string;
+                usuarioId: number;
+                updateRecado: string | null;
+              }) => {
+                return {
+                  createRecado: m.createRecado,
+                  descricao: m.descricao,
+                  detalhamento: m.detalhamento,
+                  recadoId: m.recadoId,
+                  status: m.status,
+                  usuarioId: m.usuarioId,
+                  updateRecado: m.updateRecado,
+                };
+              }
+            ),
         });
       } else {
         return HttpHelper.sucess(res, result!.recados);
@@ -126,6 +148,10 @@ export class UsuarioController {
       const useCase = new BuscarRecadoPorIdUsecase(new UsuarioRepository());
 
       const result = await useCase.execute(Number(usuarioId), recadoId);
+
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
 
       return HttpHelper.sucess(
         res,

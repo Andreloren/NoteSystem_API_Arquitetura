@@ -10,7 +10,7 @@ export class BuscarRecadoPorIdUsecase {
     );
 
     if (!result) {
-      return null;
+      return Error;
     }
 
     return result;

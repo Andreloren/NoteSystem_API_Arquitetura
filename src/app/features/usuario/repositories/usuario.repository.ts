@@ -48,16 +48,16 @@ export class UsuarioRepository {
     return result;
   }
 
-  public async getByUsuarioId(usuarioId: number) {
+  public async getByUsuarioId(usuarioId: number): Promise<any | Error> {
     const result = await this._repository.findOneBy({ usuarioId });
 
     if (!result) {
-      return null;
+      return new Error("Usuário não cadastrado");
     }
     return this.mapToModel(result);
   }
 
-  public async getByCpf(cpf: string) {
+  public async getByCpf(cpf: string): Promise<any> {
     const result = await this._repository.findOneBy({ cpf });
 
     if (!result) {
@@ -66,23 +66,35 @@ export class UsuarioRepository {
     return this.mapToModel(result);
   }
 
-  public async getAll() {
-    const result = await this._repository.find();
+  public async getByEmail(email: string): Promise<any> {
+    const result = await this._repository.findOneBy({ email });
 
     if (!result) {
       return null;
     }
+    return this.mapToModel(result);
+  }
+
+  public async getAll(): Promise<any | Error> {
+    const result = await this._repository.find();
+
+    if (result?.length === 0) {
+      return new Error("Não existem Usuários cadastrados");
+    }
+
     return result.map((usuario) => this.mapToModel(usuario));
   }
 
-  public async getAllRecadosByIdUsuario(usuarioId: number): Promise<any> {
+  public async getAllRecadosByIdUsuario(
+    usuarioId: number
+  ): Promise<any | Error> {
     const result = await this._repository.findOne({
       where: { usuarioId: usuarioId },
       relations: ["recados"],
     });
 
-    if (!result) {
-      return null;
+    if (result?.recados?.length === 0) {
+      return new Error("Não existem recados para este Usuário");
     }
 
     return result;
@@ -91,7 +103,7 @@ export class UsuarioRepository {
   public async getOneRecadoByIdUsuario(
     usuarioId: number,
     recadoId: string
-  ): Promise<any> {
+  ): Promise<any | Error> {
     const result = await this._repository.findOne({
       relations: ["recados"],
       where: { usuarioId, recados: { recadoId: recadoId } },
@@ -99,7 +111,7 @@ export class UsuarioRepository {
     const recado = result?.recados?.filter((f) => f.recadoId === recadoId);
 
     if (recado?.length === 0 || !recado) {
-      return null;
+      return new Error("Recado não existe");
     }
 
     return result;

@@ -4,13 +4,18 @@ import { validarCamposRecadoValidator } from "../../recados/validators/validarCa
 import { UsuarioController } from "../controllers/usuario.controller";
 import { buscarUsuarioPorId } from "../validators/buscarUsuarioPorId.validator";
 import { checkCpfDuplicadoValidator } from "../validators/checkCpfDuplicado.validator";
+import { checkEmailDuplicadoValidator } from "../validators/checkEmailDuplicado.validator";
 import { validarCamposUsuario } from "../validators/validarCampos.validator";
 
 const usuarioRoutes = Router();
 
 usuarioRoutes.post(
   "/",
-  [checkCpfDuplicadoValidator, validarCamposUsuario],
+  [
+    checkCpfDuplicadoValidator,
+    checkEmailDuplicadoValidator,
+    validarCamposUsuario,
+  ],
   new UsuarioController().create
 );
 
