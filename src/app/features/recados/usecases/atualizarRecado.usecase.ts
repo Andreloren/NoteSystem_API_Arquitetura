@@ -1,5 +1,5 @@
 import { Recado } from "../../../models/recado.model";
-import { RecadoRepository } from "../../recados/repositories/recados.repository";
+import { RecadoRepository } from "../repositories/recados.repository";
 
 export type AtualizarRecadoDTO = {
   recadoId: string;

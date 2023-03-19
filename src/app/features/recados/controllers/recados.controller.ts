@@ -1,8 +1,9 @@
 import { Response, Request } from "express";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { RecadoRepository } from "../repositories/recados.repository";
-import { AtualizarRecadoUseCase } from "../../usuario/usecases/atualizarRecado.usecase";
+import { AtualizarRecadoUseCase } from "../usecases/atualizarRecado.usecase";
 import { CriarRecadosUseCase } from "../usecases/criarRecados.usecase";
+import { DeletarRecadoUsecase } from "../usecases/deletarRecado.useCase";
 
 export class RecadosController {
   public async create(req: Request, res: Response) {
@@ -48,6 +49,20 @@ export class RecadosController {
         "Recado atualizado com Sucesso",
         200
       );
+    } catch (error) {
+      return HttpHelper.error(res, "Server not found");
+    }
+  }
+
+  public async delete(req: Request, res: Response) {
+    try {
+      const { recadoId, usuarioId } = req.params;
+
+      const useCase = new DeletarRecadoUsecase(new RecadoRepository());
+
+      const result = await useCase.execute(recadoId, Number(usuarioId));
+
+      return HttpHelper.sucess(res, result, "Recado deletado com Sucesso", 200);
     } catch (error) {
       return HttpHelper.error(res, "Server not found");
     }

@@ -54,4 +54,22 @@ export class RecadoRepository {
 
     return this.mapToModel(result);
   }
+
+  public async delete(
+    recadoId: string,
+    usuarioId: number
+  ): Promise<Recado | null> {
+    const recado = await this._repository.findOne({
+      relations: ["usuario"],
+      where: { recadoId, usuario: { usuarioId: Number(usuarioId) } },
+    });
+
+    if (!recado) {
+      return null;
+    }
+
+    await this._repository.delete(recadoId!);
+
+    return this.mapToModel(recado);
+  }
 }

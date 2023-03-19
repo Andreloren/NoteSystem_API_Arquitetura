@@ -52,4 +52,10 @@ usuarioRoutes.put(
   new RecadosController().update
 );
 
+usuarioRoutes.delete(
+  "/:usuarioId/recados/:recadoId",
+  [buscarUsuarioPorId],
+  new RecadosController().delete
+);
+
 export { usuarioRoutes };
