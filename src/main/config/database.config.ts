@@ -1,17 +1,16 @@
 import "dotenv/config";
 
 import { DataSource } from "typeorm";
-
-const port = process.env.PORT as number | undefined;
+import { appEnv } from "../../app/envs/app.env";
 
 export default new DataSource({
   type: "postgres",
-  url: process.env.DATABASE_URL,
-  host: process.env.DB_HOST,
-  port: port,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  url: appEnv.dbUrl,
+  host: appEnv.dbHost,
+  port: appEnv.port,
+  username: appEnv.dbUser,
+  password: appEnv.dbPass,
+  database: appEnv.dbName,
   synchronize: false,
   logging: true,
   entities: ["src/app/shared/database/entities/**/*.ts"],

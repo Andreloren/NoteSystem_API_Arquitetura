@@ -7,7 +7,7 @@ import config from "../config/database.config";
 export class DatabaseConnection {
   private static _connection: DataSource;
 
-  public static async connect() {
+  public static async connect(): Promise<void> {
     if (!this._connection) {
       this._connection = await config.initialize();
       console.log("Conectado ao DB");
