@@ -11,8 +11,8 @@ export class BuscarTodosUsuariosUsecase {
 
     const cache: any[] = await cacheRepository.get("LIST_USERS");
 
-    if (!cache) {
-      await cacheRepository.set("LIST_USERS", result);
+    if (cache) {
+      return cache;
     }
 
     if (!result) {
