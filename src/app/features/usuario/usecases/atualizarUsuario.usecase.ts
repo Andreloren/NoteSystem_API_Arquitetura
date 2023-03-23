@@ -24,6 +24,8 @@ export class AtualizarUsuarioUseCase {
 
     const cacheRepository = new CacheRepository();
 
+    await cacheRepository.del("LIST_USERS");
+
     await cacheRepository.del("LIST_USER");
 
     await cacheRepository.setEX("LIST_USER", [usuario], 3600);
