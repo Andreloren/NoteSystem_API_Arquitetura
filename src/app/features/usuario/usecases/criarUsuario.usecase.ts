@@ -1,4 +1,5 @@
 import { Usuario } from "../../../models/usuario.model";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
 interface CriarUsuarioDTO {
@@ -12,8 +13,16 @@ export class CriarUsuarioUseCase {
   constructor(private repository: UsuarioRepository) {}
 
   public async execute(data: CriarUsuarioDTO): Promise<Usuario> {
-    const usuario = Usuario.create(data.nome, data.email, data.cpf, data.senha);
+    const usuario = new Usuario(data.nome, data.email, data.cpf, data.senha);
 
-    return await this.repository.create(usuario);
+    const cacheRepository = new CacheRepository();
+
+    await cacheRepository.del("LIST_USER");
+
+    await cacheRepository.setEX("LIST_USER", [usuario], 3600);
+
+    const result = await this.repository.create(usuario);
+
+    return result;
   }
 }

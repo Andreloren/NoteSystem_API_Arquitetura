@@ -1,4 +1,5 @@
 import { Usuario } from "../../../models/usuario.model";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
 export type AtualizarUsuarioDTO = {
@@ -20,6 +21,12 @@ export class AtualizarUsuarioUseCase {
       data.senha,
       data.usuarioId
     );
+
+    const cacheRepository = new CacheRepository();
+
+    await cacheRepository.del("LIST_USER");
+
+    await cacheRepository.setEX("LIST_USER", [usuario], 3600);
 
     return await this.repository.update(
       usuario.nome,
