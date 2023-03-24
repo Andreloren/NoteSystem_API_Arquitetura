@@ -11,7 +11,7 @@ export type AtualizarUsuarioDTO = {
 };
 
 export class AtualizarUsuarioUseCase {
-  private cacheKey = "USER_CREATE_UPDATE";
+  private cacheKey = "USER_UPDATE";
 
   constructor(
     private repository: UsuarioRepository,

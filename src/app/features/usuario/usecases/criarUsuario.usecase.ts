@@ -10,7 +10,7 @@ interface CriarUsuarioDTO {
 }
 
 export class CriarUsuarioUseCase {
-  private cacheKey = "USER_CREATE_UPDATE";
+  private cacheKey = "USER_CREATE";
 
   constructor(
     private repository: UsuarioRepository,
