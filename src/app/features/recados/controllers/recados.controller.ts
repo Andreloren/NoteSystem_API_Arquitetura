@@ -1,4 +1,5 @@
 import { Response, Request } from "express";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { RecadoRepository } from "../repositories/recados.repository";
 import { AtualizarRecadoUseCase } from "../usecases/atualizarRecado.usecase";
@@ -11,14 +12,16 @@ export class RecadosController {
       const { descricao, detalhamento } = req.body;
       const { usuarioId } = req.params;
 
-      const useCase = new CriarRecadosUseCase(new RecadoRepository());
+      const useCase = new CriarRecadosUseCase(
+        new RecadoRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute({
         usuarioId: Number(usuarioId),
         descricao,
         detalhamento,
       });
-      console.log(result);
 
       return HttpHelper.sucess(res, result, "Recado criado com Sucesso", 201);
     } catch (error) {

@@ -83,10 +83,7 @@ export class UsuarioController {
     try {
       const { usuarioId } = req.params;
 
-      const useCase = new BuscarUsuarioPorIdfUsecase(
-        new UsuarioRepository(),
-        new CacheRepository()
-      );
+      const useCase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
 
       const result = await useCase.execute(Number(usuarioId));
 
@@ -106,7 +103,8 @@ export class UsuarioController {
       const { filter } = req.query;
 
       const useCase = new BuscarRecadosPorUsuarioUsecase(
-        new UsuarioRepository()
+        new UsuarioRepository(),
+        new CacheRepository()
       );
 
       const result = await useCase.execute(Number(usuarioId));

@@ -101,6 +101,10 @@ export class UsuarioRepository {
       return new Error("Não existem recados para este Usuário");
     }
 
+    if (result?.usuarioId !== usuarioId) {
+      return new Error("Não existe Usuário");
+    }
+
     return result;
   }
 

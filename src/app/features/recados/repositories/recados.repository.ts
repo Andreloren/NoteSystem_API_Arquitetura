@@ -16,7 +16,7 @@ export class RecadoRepository {
     );
   }
 
-  public async create(recado: RecadosEntity): Promise<Recado> {
+  public async create(recado: RecadosEntity): Promise<Recado | any> {
     const recadoEntity = this._repository.create({
       recadoId: recado.recadoId,
       status: recado.status,
@@ -27,7 +27,7 @@ export class RecadoRepository {
 
     const result = await this._repository.save(recadoEntity);
 
-    return result;
+    return this.mapToModel(result);
   }
 
   public async update(

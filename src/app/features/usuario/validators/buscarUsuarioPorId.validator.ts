@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 import { BuscarUsuarioPorIdfUsecase } from "../usecases/buscarUsuarioPorId.usecase";
@@ -12,10 +11,7 @@ export const buscarUsuarioPorId = async (
   try {
     const { usuarioId } = req.params;
 
-    const usecase = new BuscarUsuarioPorIdfUsecase(
-      new UsuarioRepository(),
-      new CacheRepository()
-    );
+    const usecase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
 
     const result = await usecase.execute(Number(usuarioId));
 
