@@ -1,4 +1,5 @@
 import { Response, Request } from "express";
+import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { HttpHelper } from "../../../shared/utils/http.helper";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 import { AtualizarUsuarioUseCase } from "../usecases/atualizarUsuario.usecase";
@@ -13,7 +14,10 @@ export class UsuarioController {
     try {
       const { nome, email, cpf, senha } = req.body;
 
-      const useCase = new CriarUsuarioUseCase(new UsuarioRepository());
+      const useCase = new CriarUsuarioUseCase(
+        new UsuarioRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute({ nome, email, cpf, senha });
 
@@ -28,7 +32,10 @@ export class UsuarioController {
       const { usuarioId } = req.params;
       const { nome, email, cpf, senha } = req.body;
 
-      const useCase = new AtualizarUsuarioUseCase(new UsuarioRepository());
+      const useCase = new AtualizarUsuarioUseCase(
+        new UsuarioRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute({
         usuarioId: Number(usuarioId),
@@ -37,6 +44,10 @@ export class UsuarioController {
         cpf,
         senha,
       });
+
+      if (result instanceof Error) {
+        return res.status(400).json({ mensagem: result.message });
+      }
 
       return HttpHelper.sucess(
         res,
@@ -51,7 +62,10 @@ export class UsuarioController {
 
   public async listAll(req: Request, res: Response) {
     try {
-      const useCase = new BuscarTodosUsuariosUsecase(new UsuarioRepository());
+      const useCase = new BuscarTodosUsuariosUsecase(
+        new UsuarioRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute();
 
@@ -69,7 +83,10 @@ export class UsuarioController {
     try {
       const { usuarioId } = req.params;
 
-      const useCase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
+      const useCase = new BuscarUsuarioPorIdfUsecase(
+        new UsuarioRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute(Number(usuarioId));
 

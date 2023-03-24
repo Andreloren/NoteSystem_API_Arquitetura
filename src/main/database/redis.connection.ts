@@ -13,13 +13,22 @@ export class RedisConnection {
         password: redisEnv.password,
       });
     }
+    console.log("Redis is connected.");
   }
 
   public static get connection() {
     if (!this._connection) {
-      throw new Error("Redis nao conectado");
+      throw new Error("Redis is not connected.");
     }
 
     return this._connection;
+  }
+
+  public static async destroy() {
+    if (!this._connection) {
+      throw new Error("Redis is not connected.");
+    }
+
+    await this._connection.quit();
   }
 }

@@ -10,20 +10,27 @@ interface CriarUsuarioDTO {
 }
 
 export class CriarUsuarioUseCase {
-  constructor(private repository: UsuarioRepository) {}
+  private cacheKey = "USER_CREATE_UPDATE";
 
-  public async execute(data: CriarUsuarioDTO): Promise<Usuario> {
+  constructor(
+    private repository: UsuarioRepository,
+    private cacheRepository: CacheRepository
+  ) {}
+
+  public async execute(data: CriarUsuarioDTO): Promise<Usuario | any> {
+    await this.cacheRepository.del(this.cacheKey);
+
+    const cache = await this.cacheRepository.get(this.cacheKey);
+
+    if (cache) {
+      return cache as any[];
+    }
+
     const usuario = new Usuario(data.nome, data.email, data.cpf, data.senha);
 
-    const cacheRepository = new CacheRepository();
-
-    await cacheRepository.del("LIST_USERS");
-
-    await cacheRepository.del("LIST_USER");
-
-    await cacheRepository.setEX("LIST_USER", [usuario], 3600);
-
     const result = await this.repository.create(usuario);
+
+    await this.cacheRepository.set(this.cacheKey, result);
 
     return result;
   }

@@ -11,10 +11,23 @@ export type AtualizarUsuarioDTO = {
 };
 
 export class AtualizarUsuarioUseCase {
-  constructor(private repository: UsuarioRepository) {}
+  private cacheKey = "USER_CREATE_UPDATE";
 
-  public async execute(data: AtualizarUsuarioDTO): Promise<Usuario> {
-    const usuario = Usuario.create(
+  constructor(
+    private repository: UsuarioRepository,
+    private cacheRepository: CacheRepository
+  ) {}
+
+  public async execute(data: AtualizarUsuarioDTO): Promise<Usuario | any> {
+    await this.cacheRepository.del(this.cacheKey);
+
+    const cache = await this.cacheRepository.get(this.cacheKey);
+
+    if (cache) {
+      return cache as any[];
+    }
+
+    const result = await this.repository.update(
       data.nome,
       data.email,
       data.cpf,
@@ -22,20 +35,12 @@ export class AtualizarUsuarioUseCase {
       data.usuarioId
     );
 
-    const cacheRepository = new CacheRepository();
+    if (!result) {
+      return Error;
+    }
 
-    await cacheRepository.del("LIST_USERS");
+    await this.cacheRepository.set(this.cacheKey, result);
 
-    await cacheRepository.del("LIST_USER");
-
-    await cacheRepository.setEX("LIST_USER", [usuario], 3600);
-
-    return await this.repository.update(
-      usuario.nome,
-      usuario.email,
-      usuario.cpf,
-      usuario.senha,
-      usuario.usuarioId
-    );
+    return result;
   }
 }

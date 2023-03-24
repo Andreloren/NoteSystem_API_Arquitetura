@@ -27,7 +27,7 @@ export class UsuarioRepository {
 
     const result = await this._repository.save(usuarioEntity);
 
-    return result;
+    return this.mapToModel(result);
   }
 
   public async update(
@@ -36,8 +36,12 @@ export class UsuarioRepository {
     cpf: string,
     senha: string,
     usuarioId?: number
-  ): Promise<Usuario> {
+  ): Promise<Usuario | any> {
     const usuarioAtualizado = await this._repository.findOneBy({ usuarioId });
+
+    if (!usuarioAtualizado) {
+      return new Error("Usuário não cadastrado");
+    }
 
     usuarioAtualizado!.nome = nome ? nome : usuarioAtualizado!.nome;
     usuarioAtualizado!.email = email ? email : usuarioAtualizado!.email;
@@ -45,7 +49,7 @@ export class UsuarioRepository {
 
     const result = await this._repository.save(usuarioAtualizado!);
 
-    return result;
+    return this.mapToModel(result);
   }
 
   public async getByUsuarioId(usuarioId: number): Promise<any | Error> {
