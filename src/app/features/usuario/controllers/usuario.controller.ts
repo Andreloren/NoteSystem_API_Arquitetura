@@ -160,7 +160,10 @@ export class UsuarioController {
     try {
       const { usuarioId, recadoId } = req.params;
 
-      const useCase = new BuscarRecadoPorIdUsecase(new UsuarioRepository());
+      const useCase = new BuscarRecadoPorIdUsecase(
+        new UsuarioRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute(Number(usuarioId), recadoId);
 
