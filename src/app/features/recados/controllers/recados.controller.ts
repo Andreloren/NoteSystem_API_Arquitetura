@@ -34,7 +34,10 @@ export class RecadosController {
       const { usuarioId, recadoId } = req.params;
       const { descricao, detalhamento, status } = req.body;
 
-      const useCase = new AtualizarRecadoUseCase(new RecadoRepository());
+      const useCase = new AtualizarRecadoUseCase(
+        new RecadoRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute({
         recadoId,
@@ -71,7 +74,10 @@ export class RecadosController {
     try {
       const { recadoId, usuarioId } = req.params;
 
-      const useCase = new DeletarRecadoUsecase(new RecadoRepository());
+      const useCase = new DeletarRecadoUsecase(
+        new RecadoRepository(),
+        new CacheRepository()
+      );
 
       const result = await useCase.execute(recadoId, Number(usuarioId));
 
