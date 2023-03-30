@@ -1,4 +1,3 @@
-import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { UsuarioRepository } from "../repositories/usuario.repository";
 
 export class BuscarUsuarioPorIdfUsecase {
