@@ -1,4 +1,3 @@
-import { Recado } from "../../../models/recado.model";
 import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
 import { RecadoRepository } from "../repositories/recados.repository";
 

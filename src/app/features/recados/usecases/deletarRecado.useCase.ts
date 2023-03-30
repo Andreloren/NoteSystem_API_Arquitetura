@@ -1,5 +1,4 @@
 import { CacheRepository } from "../../../shared/database/repositories/cache.repository";
-import { UsuarioRepository } from "../../usuario/repositories/usuario.repository";
 import { RecadoRepository } from "../repositories/recados.repository";
 
 export class DeletarRecadoUsecase {
