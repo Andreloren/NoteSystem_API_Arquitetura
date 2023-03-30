@@ -6,7 +6,6 @@ interface CriarRecadosDTO {
   descricao: string;
   detalhamento: string;
   usuarioId: number;
-  status?: string;
 }
 
 export class CriarRecadosUseCase {
@@ -17,29 +16,20 @@ export class CriarRecadosUseCase {
     private cacheRepository: CacheRepository
   ) {}
 
-  public async execute({
-    descricao,
-    detalhamento,
-    usuarioId,
-  }: CriarRecadosDTO): Promise<Recado | any> {
+  public async execute(data: CriarRecadosDTO): Promise<Recado | any> {
     await this.cacheRepository.del(this.cacheKey);
 
-    const cache = await this.cacheRepository.get(this.cacheKey);
-
-    if (cache) {
-      return cache as any[];
-    }
-
-    const recado = Recado.create(descricao, detalhamento, usuarioId);
-
-    if (!recado) {
-      return Error;
-    }
+    const recado = new Recado(
+      data.descricao,
+      data.detalhamento,
+      data.usuarioId
+    );
 
     const result = await this.repository.create(recado);
 
     await this.cacheRepository.set(this.cacheKey, result);
+    await this.cacheRepository.del("ALL_NOTES");
 
-    return recado;
+    return result;
   }
 }

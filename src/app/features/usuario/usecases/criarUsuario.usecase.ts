@@ -20,17 +20,14 @@ export class CriarUsuarioUseCase {
   public async execute(data: CriarUsuarioDTO): Promise<Usuario | any> {
     await this.cacheRepository.del(this.cacheKey);
 
-    const cache = await this.cacheRepository.get(this.cacheKey);
-
-    if (cache) {
-      return cache as any[];
-    }
-
     const usuario = new Usuario(data.nome, data.email, data.cpf, data.senha);
+
+    const cache: any[] = await this.cacheRepository.get("ALL_USERS");
 
     const result = await this.repository.create(usuario);
 
     await this.cacheRepository.set(this.cacheKey, result);
+    await this.cacheRepository.set("ALL_USERS", [...cache, result]);
 
     return result;
   }

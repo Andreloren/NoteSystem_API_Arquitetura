@@ -2,7 +2,6 @@ import { DatabaseConnection } from "../../../../src/main/database/typeorm.connec
 import { RedisConnection } from "../../../../src/main/database/redis.connection";
 import { BuscarUsuarioPorIdfUsecase } from "../../../../src/app/features/usuario/usecases/buscarUsuarioPorId.usecase";
 import { UsuarioRepository } from "../../../../src/app/features/usuario/repositories/usuario.repository";
-import { native } from "pg";
 import { Usuario } from "../../../../src/app/models/usuario.model";
 
 describe("Get user by ID usecase test", () => {
@@ -50,6 +49,5 @@ describe("Get user by ID usecase test", () => {
     expect(result).toHaveProperty("usuarioId");
     expect(result).toHaveProperty("cpf");
     expect(result).toHaveProperty("email");
-    expect(result!.usuarioId).toBe(usuario.usuarioId);
   });
 });

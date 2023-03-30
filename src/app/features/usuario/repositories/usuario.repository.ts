@@ -97,12 +97,12 @@ export class UsuarioRepository {
       relations: ["recados"],
     });
 
-    if (result?.recados?.length === 0) {
-      return new Error("Não existem recados para este Usuário");
+    if (!result) {
+      return new Error("Não existe Usuário");
     }
 
-    if (result?.usuarioId !== usuarioId) {
-      return new Error("Não existe Usuário");
+    if (result!.recados!.length === 0) {
+      return new Error("Não existem recados para este Usuário");
     }
 
     return result;

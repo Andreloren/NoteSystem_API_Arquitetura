@@ -10,7 +10,7 @@ export class BuscarRecadosPorUsuarioUsecase {
     private cacheRepository: CacheRepository
   ) {}
 
-  public async execute(usuarioId: number): Promise<any | Error> {
+  public async execute(usuarioId: number): Promise<any> {
     await this.cacheRepository.del(this.cacheKey);
 
     const cache = await this.cacheRepository.get(this.cacheKey);

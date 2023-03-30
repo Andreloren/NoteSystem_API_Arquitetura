@@ -10,8 +10,6 @@ export class BuscarTodosUsuariosUsecase {
   ) {}
 
   public async execute(): Promise<any> {
-    await this.cacheRepository.del(this.cacheKey);
-
     const cache = await this.cacheRepository.get(this.cacheKey);
 
     if (cache) {
