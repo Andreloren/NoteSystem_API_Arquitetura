@@ -5,7 +5,7 @@ import { BuscarTodosUsuariosUsecase } from "../../../../src/app/features/usuario
 import { CacheRepository } from "../../../../src/app/shared/database/repositories/cache.repository";
 import { Usuario } from "../../../../src/app/models/usuario.model";
 
-describe("Get user by ID usecase test", () => {
+describe("Get all users", () => {
   const usuario = new Usuario(
     "Teste",
     "teste@teste.com",
