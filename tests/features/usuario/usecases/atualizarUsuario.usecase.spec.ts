@@ -3,14 +3,15 @@ import { Usuario } from "../../../../src/app/models/usuario.model";
 import { CacheRepository } from "../../../../src/app/shared/database/repositories/cache.repository";
 import { RedisConnection } from "../../../../src/main/database/redis.connection";
 import { DatabaseConnection } from "../../../../src/main/database/typeorm.connection";
-import { CriarUsuarioUseCase } from "../../../../src/app/features/usuario/usecases/criarUsuario.usecase";
+import { AtualizarUsuarioUseCase } from "../../../../src/app/features/usuario/usecases/atualizarUsuario.usecase";
 
-describe("create a user", () => {
-  const usuario = new Usuario(
-    "Teste",
+describe("update a user", () => {
+  const usuarioAtualizado = new Usuario(
+    "NovoTeste",
     "teste@teste.com",
     "111.111.111-11",
-    "1234567"
+    "1234567",
+    1
   );
 
   beforeAll(async () => {
@@ -26,7 +27,7 @@ describe("create a user", () => {
   const makeSut = () => {
     const cache = new CacheRepository();
     const repository = new UsuarioRepository();
-    const usecase = new CriarUsuarioUseCase(repository, cache);
+    const usecase = new AtualizarUsuarioUseCase(repository, cache);
 
     return {
       sut: usecase,
@@ -35,16 +36,26 @@ describe("create a user", () => {
     };
   };
 
-  test("Should return a created user", async () => {
+  test("Should return an updated user", async () => {
     const { sut } = makeSut();
     jest
-      .spyOn(UsuarioRepository.prototype, "create")
-      .mockResolvedValue(usuario);
+      .spyOn(UsuarioRepository.prototype, "update")
+      .mockResolvedValue(usuarioAtualizado);
+    jest.spyOn(CacheRepository.prototype, "set").mockResolvedValue();
 
-    const result = await sut.execute(usuario);
+    const result = await sut.execute(usuarioAtualizado);
 
     expect(result).toBeDefined();
-    expect(result).not.toBeNull();
-    expect(result).toBe(usuario);
+    expect(result).toBe(usuarioAtualizado);
+  });
+
+  test("Should return null for user", async () => {
+    const { sut } = makeSut();
+    jest.spyOn(UsuarioRepository.prototype, "update").mockResolvedValue(null);
+    jest.spyOn(CacheRepository.prototype, "set").mockResolvedValue();
+
+    const result = await sut.execute(usuarioAtualizado);
+
+    expect(result).toBe(Error);
   });
 });

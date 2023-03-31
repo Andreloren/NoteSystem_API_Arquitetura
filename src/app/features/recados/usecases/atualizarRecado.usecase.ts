@@ -18,14 +18,6 @@ export class AtualizarRecadoUseCase {
   ) {}
 
   public async execute(data: AtualizarRecadoDTO): Promise<any | Error> {
-    await this.cacheRepository.del(this.cacheKey);
-
-    const cache = await this.cacheRepository.get(this.cacheKey);
-
-    if (cache) {
-      return cache as any[];
-    }
-
     const result = await this.repository.update(
       data.recadoId,
       data.usuarioId,
@@ -37,6 +29,10 @@ export class AtualizarRecadoUseCase {
     if (!result) {
       return Error;
     }
+
+    await this.cacheRepository.del(this.cacheKey);
+
+    await this.cacheRepository.del("ALL_NOTES");
 
     await this.cacheRepository.set(this.cacheKey, result);
 

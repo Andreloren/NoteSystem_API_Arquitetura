@@ -19,14 +19,6 @@ export class AtualizarUsuarioUseCase {
   ) {}
 
   public async execute(data: AtualizarUsuarioDTO): Promise<Usuario | any> {
-    await this.cacheRepository.del(this.cacheKey);
-
-    const cache = await this.cacheRepository.get(this.cacheKey);
-
-    if (cache) {
-      return cache as any[];
-    }
-
     const result = await this.repository.update(
       data.nome,
       data.email,
@@ -38,6 +30,10 @@ export class AtualizarUsuarioUseCase {
     if (!result) {
       return Error;
     }
+
+    await this.cacheRepository.del(this.cacheKey);
+
+    await this.cacheRepository.del("ALL_USERS");
 
     await this.cacheRepository.set(this.cacheKey, result);
 

@@ -1,4 +1,6 @@
 import { RedisConnection } from "../../../../main/database/redis.connection";
+import { Recado } from "../../../models/recado.model";
+import { Usuario } from "../../../models/usuario.model";
 
 export class CacheRepository {
   private redis = RedisConnection.connection;
@@ -11,7 +13,7 @@ export class CacheRepository {
     return JSON.parse(result);
   }
 
-  public async set(key: string, value: any): Promise<void> {
+  public async set(key: string, value: any): Promise<void | Usuario | Recado> {
     await this.redis.set(key, JSON.stringify(value));
   }
 
@@ -19,7 +21,7 @@ export class CacheRepository {
     await this.redis.set(key, JSON.stringify(value), "EX", ttl);
   }
 
-  public async del(key: string): Promise<void> {
+  public async del(key: string): Promise<void | Usuario | Recado> {
     await this.redis.del(key);
   }
 }

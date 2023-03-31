@@ -28,6 +28,7 @@ export class CriarRecadosUseCase {
     const result = await this.repository.create(recado);
 
     await this.cacheRepository.set(this.cacheKey, result);
+
     await this.cacheRepository.del("ALL_NOTES");
 
     return result;
