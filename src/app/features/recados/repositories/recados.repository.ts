@@ -62,7 +62,7 @@ export class RecadoRepository {
   public async delete(
     recadoId: string,
     usuarioId: number
-  ): Promise<Recado | Error> {
+  ): Promise<Recado | any> {
     const recado = await this._repository.findOne({
       relations: ["usuario"],
       where: { recadoId, usuario: { usuarioId: Number(usuarioId) } },

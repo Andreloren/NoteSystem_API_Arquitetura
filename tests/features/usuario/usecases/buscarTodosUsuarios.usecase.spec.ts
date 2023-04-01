@@ -68,6 +68,7 @@ describe("Get all users", () => {
 
   test("Should return a cache list when there are no users", async () => {
     const { sut } = makeSut();
+
     jest.spyOn(UsuarioRepository.prototype, "getAll").mockResolvedValueOnce([]);
     jest.spyOn(CacheRepository.prototype, "get").mockResolvedValue([usuario]);
     jest.spyOn(CacheRepository.prototype, "set").mockResolvedValue();
