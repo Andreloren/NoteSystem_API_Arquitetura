@@ -40,8 +40,11 @@ describe("create a user", () => {
     jest
       .spyOn(UsuarioRepository.prototype, "create")
       .mockResolvedValue(usuario);
+    jest.spyOn(CacheRepository.prototype, "get").mockResolvedValue([usuario]);
 
     const result = await sut.execute(usuario);
+
+    jest.spyOn(CacheRepository.prototype, "set").mockResolvedValue(result);
 
     expect(result).toBeDefined();
     expect(result).not.toBeNull();

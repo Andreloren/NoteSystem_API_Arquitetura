@@ -22,12 +22,12 @@ export class CriarUsuarioUseCase {
 
     const usuario = new Usuario(data.nome, data.email, data.cpf, data.senha);
 
-    const cache: any[] = await this.cacheRepository.get("ALL_USERS");
+    const cacheAll: any[] = (await this.cacheRepository.get("ALL_USERS")) ?? [];
 
     const result = await this.repository.create(usuario);
 
     await this.cacheRepository.set(this.cacheKey, result);
-    await this.cacheRepository.set("ALL_USERS", [...cache, result]);
+    await this.cacheRepository.set("ALL_USERS", [...cacheAll, result]);
 
     return result;
   }

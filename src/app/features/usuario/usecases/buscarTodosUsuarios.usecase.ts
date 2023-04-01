@@ -18,10 +18,6 @@ export class BuscarTodosUsuariosUsecase {
 
     const result = await this.repository.getAll();
 
-    if (!result) {
-      return Error;
-    }
-
     await this.cacheRepository.set(this.cacheKey, result);
 
     return result;
