@@ -10,8 +10,6 @@
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
     "start": "node dist/index.js",
-    "migration:generate": "typeorm-ts-node-commonjs migration:generate -- -d ./src/main/config/database.config.ts",
-    "migration:generate:test": "rimraf tests/shared/migrations/*.ts && cross-env NODE_ENV=test typeorm-ts-node-commonjs migration:generate -- -d ./src/main/config/database.config.ts tests/shared/migrations/TestMigration",
     "migration:create": "typeorm migration:create src/app/shared/database/migrations/CreateTable",
     "migration:show": "typeorm-ts-node-commonjs migration:show -d ./src/main/config/database.config.ts",
     "migration:run": "typeorm-ts-node-commonjs migration:run -d ./src/main/config/database.config.ts",
@@ -29,7 +27,7 @@
     "test:unit:verbose": "jest -c jest.unit.config.ts --verbose --runInBand --detectOpenHandles",
     "test:unit:coverage": "jest -c jest.unit.config.ts --silent --noStackTrace --runInBand --coverage",
     "test:unit:watch": "jest -c jest.unit.config.ts --silent --noStackTrace --runInBand --watchAll",
-    "test:setup": "rimraf database.sqlite3 && npm run migration:generate:test && npm run migration:run:test"
+    "test:setup": "rimraf database.sqlite3 && npm run migration:run:test"
   },
   "keywords": [],
   "author": "",

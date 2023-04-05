@@ -8,18 +8,15 @@ export const checkCpfDuplicadoValidator = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { cpf } = req.body;
+  const { cpf } = req.body;
 
-    const usecase = new BuscarPorCpfUsecase(new UsuarioRepository());
+  const usecase = new BuscarPorCpfUsecase(new UsuarioRepository());
 
-    const result = await usecase.execute(cpf);
+  const result = await usecase.execute(cpf);
 
-    if (!result) {
-      return next();
-    }
+  if (result) {
     return HttpHelper.badRequest(res, "CPF já cadastrado", 409);
-  } catch (error: any) {
-    return HttpHelper.error(res, "Server not found");
   }
+
+  next();
 };

@@ -8,18 +8,15 @@ export const checkEmailDuplicadoValidator = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { email } = req.body;
+  const { email } = req.body;
 
-    const usecase = new BuscarPorEmailUsecase(new UsuarioRepository());
+  const usecase = new BuscarPorEmailUsecase(new UsuarioRepository());
 
-    const result = await usecase.execute(email);
+  const result = await usecase.execute(email);
 
-    if (!result) {
-      return next();
-    }
+  if (result) {
     return HttpHelper.badRequest(res, "Email já cadastrado", 409);
-  } catch (error: any) {
-    return HttpHelper.error(res, "Server not found");
   }
+
+  next();
 };

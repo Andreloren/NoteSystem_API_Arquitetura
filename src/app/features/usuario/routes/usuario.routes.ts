@@ -12,9 +12,9 @@ const usuarioRoutes = Router();
 usuarioRoutes.post(
   "/",
   [
-    checkCpfDuplicadoValidator,
-    checkEmailDuplicadoValidator,
     validarCamposUsuario,
+    checkEmailDuplicadoValidator,
+    checkCpfDuplicadoValidator,
   ],
   new UsuarioController().create
 );
