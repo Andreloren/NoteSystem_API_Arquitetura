@@ -88,7 +88,7 @@ export class UsuarioController {
       const result = await useCase.execute(Number(usuarioId));
 
       if (result instanceof Error) {
-        return res.status(400).json({ mensagem: result.message });
+        return res.status(404).json({ mensagem: result.message });
       }
 
       return HttpHelper.sucess(res, result);

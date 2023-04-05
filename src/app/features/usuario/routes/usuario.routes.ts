@@ -21,11 +21,7 @@ usuarioRoutes.post(
 
 usuarioRoutes.get("/", new UsuarioController().listAll);
 
-usuarioRoutes.get(
-  "/:usuarioId",
-  [buscarUsuarioPorId],
-  new UsuarioController().listById
-);
+usuarioRoutes.get("/:usuarioId", new UsuarioController().listById);
 
 usuarioRoutes.put(
   "/:usuarioId",

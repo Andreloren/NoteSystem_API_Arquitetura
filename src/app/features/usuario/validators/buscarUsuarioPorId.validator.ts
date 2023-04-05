@@ -8,18 +8,15 @@ export const buscarUsuarioPorId = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const { usuarioId } = req.params;
+  const { usuarioId } = req.params;
 
-    const usecase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
+  const usecase = new BuscarUsuarioPorIdfUsecase(new UsuarioRepository());
 
-    const result = await usecase.execute(Number(usuarioId));
+  const result = await usecase.execute(Number(usuarioId));
 
-    if (!result) {
-      return HttpHelper.badRequest(res, "Nenhum usuário localizado", 409);
-    }
-    return next();
-  } catch (error: any) {
-    return HttpHelper.error(res, "Server not found");
+  if (!result) {
+    return HttpHelper.badRequest(res, "Nenhum usuário localizado", 409);
   }
+
+  next();
 };
