@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import "dotenv/config";
 
-import { appEnv } from "../../app/envs/app.env";
+import { appEnv, appEnvTest } from "../../app/envs/app.env";
 
 let dataSource = new DataSource({
   type: "postgres",
@@ -19,8 +19,13 @@ let dataSource = new DataSource({
 
 if (process.env.NODE_ENV === "test") {
   dataSource = new DataSource({
-    type: "sqlite",
-    database: "database.sqlite3",
+    type: "postgres",
+    url: appEnvTest.dbUrl,
+    host: appEnvTest.dbHost,
+    port: appEnvTest.port,
+    username: appEnvTest.dbUser,
+    password: appEnvTest.dbPass,
+    database: appEnvTest.dbName,
     synchronize: false,
     entities: ["src/app/shared/database/entities/**/*.ts"],
     migrations: ["src/app/shared/database/migrations/**/*.ts"],
